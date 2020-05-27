@@ -8,9 +8,8 @@ const types = {
 const state = () => ({
     users: [],
     user: {},
-    usersLoaded: false,
-    defaultPagination: {},
-    pagination: {}
+    page: 1,
+    totalPages: 1,
 });
 
 const getters = {
@@ -20,15 +19,14 @@ const getters = {
     user(state) {
         return state.user;
     },
-    usersLoaded(state) {
-        return state.usersLoaded;
+    totalPages(state) {
+        return state.totalPages;
     }
 };
 
 const actions = {
     async fetchUsers({ commit }, filters) {
         const users = await api.getUsers(filters);
-
         commit(types.SET_USERS, users);
     },
     async usersById({ commit }, userId) {
@@ -39,8 +37,9 @@ const actions = {
 
 const mutations = {
     [types.SET_USERS](state, users) {
-        state.users = [...users];
-        state.usersLoaded = true;
+        state.users = [...users.data];
+        state.totalPages = users.total_pages;
+        state.page = users.page;
     },
     [types.CHOISE_USER](state, user) {
         state.user = user;

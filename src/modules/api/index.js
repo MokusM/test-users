@@ -7,15 +7,20 @@ class APIClient {
     this.request = request;
   }
 
-  async getUsers() {
-    const params = {};
+  async getUsers({ limit = 2, page = 1, total_pages } = {}) {
+    const params = {
+      page: page,
+      per_page: limit,
+      total_pages: total_pages
+    };
 
 
     const { data } = await this.request({
       method: "get",
-      url: this.endpoints.users()
+      url: this.endpoints.users(),
+      params
     });
-    return data.data;
+    return data;
   }
 
   async getUser(id) {
@@ -23,7 +28,7 @@ class APIClient {
       method: "get",
       url: this.endpoints.user(id)
     });
-    return data;
+    return data.data;
   }
 }
 
