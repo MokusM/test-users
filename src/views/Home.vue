@@ -28,7 +28,7 @@ export default {
 			loading: false,
 			filters: {
 				name: null,
-				limit: null,
+				limit: 6,
 				page: null
 			}
 		};

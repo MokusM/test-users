@@ -7,7 +7,7 @@ class APIClient {
     this.request = request;
   }
 
-  async getUsers({ limit = 2, page = 1, total_pages } = {}) {
+  async getUsers({ limit = 6, page = 1, total_pages } = {}) {
     const params = {
       page: page,
       per_page: limit,

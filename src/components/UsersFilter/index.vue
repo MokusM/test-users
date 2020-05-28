@@ -6,6 +6,7 @@
 					<select class="search__select" @change="updateFilters" v-model="innerFilters.limit">
 						<option value="2">2</option>
 						<option value="5">5</option>
+						<option value="6" selected>6</option>
 						<option value="10">10</option>
 						<option value="20">20</option>
 					</select>
@@ -24,7 +25,12 @@
 			</div>
 			<div class="pagination__mid">
 				<ul class="pagination-list">
-					<li v-for="(page, index) in totalPages" :key="index" class="pagination-list__item">
+					<li
+						v-for="(page, index) in totalPages"
+						:key="index"
+						:class="{'active': index+1 === page}"
+						class="pagination-list__item"
+					>
 						<a href="#" @click.prevent="changePage(page)" class="pagination-list__link">{{ page }}</a>
 					</li>
 				</ul>
@@ -45,7 +51,7 @@
 import { mapGetters } from "vuex";
 const initialFilters = {
 	page: null,
-	limit: 5
+	limit: 6
 };
 export default {
 	name: "UsersFilter",
@@ -58,8 +64,9 @@ export default {
 	},
 	data() {
 		return {
-			current: 1,
-			innerFilters: { ...initialFilters }
+			innerFilters: {
+				...initialFilters
+			}
 		};
 	},
 	watch: {
@@ -79,6 +86,12 @@ export default {
 		},
 		hasNext() {
 			return this.innerFilters.page < this.totalPages;
+		},
+		nextPage() {
+			return this.innerFilters.page + 1;
+		},
+		prevPage() {
+			return this.innerFilters.page - 1;
 		}
 	},
 	methods: {
@@ -87,12 +100,6 @@ export default {
 		},
 		onChange(event) {
 			this.$emit("update:filters", this.innerFilters);
-		},
-		nextPage() {
-			return this.innerFilters.page + 1;
-		},
-		prevPage() {
-			return this.innerFilters.page - 1;
 		},
 		changePage(page) {
 			this.innerFilters.page = page;
